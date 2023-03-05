@@ -144,10 +144,3 @@ router.delete('/:id/rant/:rantId', (req, res) => {
 
 module.exports = router
 
-
-
-        
-   
-
-
-
