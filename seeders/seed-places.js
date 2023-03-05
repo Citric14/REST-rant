@@ -1,5 +1,15 @@
 const db = require('./models')
 
+const db = require('../models')
+
+// To use await, we need an async function.
+async function seed() {
+    // Get the place, H-Thai-ML
+    let place = await db.Place.findOne({ name: 'H-Thai-ML' })
+}
+
+seed()
+
 db.Place.create([{
     name: 'H-Thai-ML',
     city: 'Seattle',

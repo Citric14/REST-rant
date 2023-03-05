@@ -10,6 +10,7 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 
 module.exports.Place = require('./places')
+module.exports.Comment = require('./comment')
 
 app.set('view engine', 'jsx')
 app.engine('jsx', require('express-react-views').createEngine())
