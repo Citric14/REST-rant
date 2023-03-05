@@ -6,17 +6,23 @@ const mongoose = require('mongoose')
 
 const placeSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  pic: String,
+  pic: { type: String, default: 'http://placekitten.com/350/350' },
   cuisines: { type: String, required: true },
   city: { type: String, default: 'Anytown' },
   state: { type: String, default: 'USA' },
-  founded: Number
+  founded: {
+    type: Number,
+    min: [1673],
+    max: [new Date().getFullYear(), 'this is the future']
+  }
 })
 
+placeSchema.methods.showEstablished = function() {
+    return `${this.name} has been serving ${this.city}, ${this.state} since ${this.founded}.`
+  }
+  
+
 module.exports = mongoose.model('Place', placeSchema)
-
-
-const router = require('express').Router()
 
 router.get('/', (req, res) => {
   db.Place.find()
@@ -35,10 +41,19 @@ router.post('/', (req, res) => {
     res.redirect('/places')
   })
   .catch(err => {
-    console.log('err', err)
-    res.render('error404')
-  })
-})
+    if (err && err.name == 'ValidationError') {
+        let message = 'Validation Error: '
+        
+        // Todo: Find all validation errors
+    
+        res.render('places/new', { message })
+    }
+    else {
+        res.render('error404')
+    }
+        })
+    })
+    
 
 router.get('/new', (req, res) => {
   res.render('places/new')
